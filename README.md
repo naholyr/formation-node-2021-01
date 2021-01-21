@@ -11,7 +11,19 @@ Contact : nicolas@chambrier.fr
 
 ### Le TP
 
-À définir
+Chat avec bot et commandes :
+
+- [ ] Authentification
+- [ ] Envoi/réception de message
+- [ ] Rooms
+- Bot "fibo" (pool de workers "simple")
+- Bot "NLP"
+
+```
+curl \
+ -H 'Authorization: Bearer JJDAZQIGNWULDUPMPMC7FFNFJGB43ANJ' \
+ 'https://api.wit.ai/message?v=20210120&q=Jette%20neuf%20dés%20à%2012%20faces'
+```
 
 Pré-requis :
 

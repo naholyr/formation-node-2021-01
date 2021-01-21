@@ -1,0 +1,67 @@
+// Promise
+
+const salaireP = travailler();
+
+const consoleP = salaireP.then((salaire) => {
+  return acheter("PS4", salaire);
+});
+
+const jouetP = consoleP.catch((err) => {
+  return puzzle();
+});
+
+const jeuP = jouetP.then((puzzleOuConsole) => {
+  return jouer(puzzleOuConsole);
+});
+
+const calinP = jeuP.then(() => {
+  calin();
+});
+
+calinP.catch((err) => {
+  console.error("Pas de calin :(", err);
+});
+
+// Promise (inline)
+
+travailler()
+  .then((salaire) => acheter("PS4", salaire))
+  .catch((err) => puzzle())
+  .then((jouet) => jouer(jouet))
+  .then(() => calin())
+  .catch((err) => console.error("Pas de calin :(", err));
+
+// Équivalent synchrone
+
+try {
+  let jouet;
+  try {
+    const salaire = travailler();
+    jouet = acheter("PS4", salaire);
+  } catch (err) {
+    jouet = puzzle();
+  }
+  jouer(jouet);
+  calin();
+} catch (err) {
+  console.error("Pas de calin :(", err);
+}
+
+// API Promise
+
+// const salaireP : Promise<Salaire> = travailler()
+// acheter :: (description : string, salaire : Salaire) : Jouet
+// const jouetP : Promise<Jouet> = salaireP.then((salaire: Salaire) => acheter('PS4', salaire))
+
+Promise<T>       :: (executor : (resolve : T => *, reject : Error => *) => *)
+
+Promise.resolve  :: (T) => Promise<T> (resolved)
+Promise.reject   :: (Error) => Promise<*> (rejected)
+
+Promise.all      :: (Array<Promise<T>>) => Promise<Array<T>>
+Promise.race     :: (Array<Promise<T>>) => Promise<T>
+
+promise<T>.then  :: (cb : T => U)     => Promise<U>
+promise<*>.catch :: (cb : Error => U) => Promise<U>
+
+promise<T>.then  :: (cb1 : T => U1, cb2 : Error => U2) => Promise<U1 | U2>
