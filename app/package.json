@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "watch-server": "nodemon server.js | bunyan",
+    "watch-server": "cross-env NODE_ENV=development nodemon -e toml,js,cjs,mjs,json server.js | bunyan",
+    "start": "cross-env NODE_ENV=production node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "echo building...",
     "prebuild": "npm run clean",
@@ -19,13 +20,17 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "bunyan": "^1.8.15",
+    "config": "^3.3.3",
     "connect-redis": "^5.0.0",
+    "cross-env": "^7.0.3",
     "debug": "^4.3.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "morgan": "^1.10.0",
     "rimraf": "^3.0.2",
-    "socket.io": "^3.1.0"
+    "socket.io": "^3.1.0",
+    "toml": "^3.0.0"
   },
   "devDependencies": {
     "eslint": "^7.18.0",

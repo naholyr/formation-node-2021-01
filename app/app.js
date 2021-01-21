@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const home = require('./lib/routes/home');
 const fiboRouter = require('./lib/routes/fibo-router');
 const loggerMiddleware = require('./lib/logger-middleware');
+const config = require('config');
 
 const app = express();
 
@@ -22,7 +23,7 @@ app.settings['x-powered-by'] = false;
 
 app.use(loggerMiddleware);
 
-app.use(morgan('dev'));
+app.use(morgan(config.morgan.format));
 
 // ------- //
 // Routing //

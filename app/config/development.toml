@@ -1,0 +1,9 @@
+[server]
+port = 3000
+
+[bunyan]
+useStderr = false
+level = "info"
+
+[morgan]
+format = "dev"

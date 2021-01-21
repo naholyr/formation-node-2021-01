@@ -1,0 +1,14 @@
+# Load config:
+# const config = require('config')
+# Then:
+# config.morgan.format
+
+[server]
+port = 80
+
+[bunyan]
+useStderr = true
+level = "warn"
+
+[morgan]
+format = "combined"
