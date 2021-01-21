@@ -1,27 +1,11 @@
-"use strict";
+'use strict';
 
-const http = require("http");
+const http = require('http');
+const app = require('./app');
+const logger = require('./lib/logger');
 
-// *Sync()
-// recusive functions
-// calculs complexes "cpu intensive"
-
-const fibo = (n) => (n === 0 ? 0 : n === 1 ? 1 : fibo(n - 1) + fibo(n - 2));
-
-const server = http.createServer((req, res) => {
-  if (req.url === "/") {
-    res.write("coucou");
-    res.end();
-  } else if (req.url === "/fibo") {
-    const n = 41;
-    res.write(`fibo(${n}) = ${fibo(n)}`);
-    res.end();
-  } else {
-    res.write("Not found");
-    res.end();
-  }
-});
+const server = http.createServer(app);
 
 server.listen(8000, () => {
-  console.log("Server ready http://localhost:8000");
+	logger.info('Server ready http://localhost:8000');
 });
