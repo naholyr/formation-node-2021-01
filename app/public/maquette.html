@@ -69,45 +69,14 @@
   <div class="container" id="step-2" style="display:none">
     <div class="row">
       <!-- rooms -->
-      <ul class="col-auto p-3 nav nav-pills flex-column">
-        <li class="nav-item d-flex">
-          <a class="nav-link flex-grow-1" href="#">
-            (system)
-            <span class="badge badge-primary badge-pill">3</span>
-          </a>
-        </li>
-        <li class="nav-item d-flex">
-          <button type="button" class="close pr-3" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <a class="nav-link flex-grow-1" href="#">
-            @<span class="txt-username"></span>
-          </a>
-        </li>
-        <li class="nav-item d-flex">
-          <button type="button" class="close pr-3" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <a class="nav-link flex-grow-1 active" href="#">
-            #general
-          </a>
-        </li>
-        <li class="nav-item d-flex">
-          <button type="button" class="close pr-3" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <button class="btn nav-link flex-grow-1">
-            #toto
-            <span class="badge badge-primary badge-pill">1</span>
-          </button>
-        </li>
+      <ul class="col-auto p-3 nav nav-pills flex-column" id="rooms-container">
       </ul>
       <div class="col p-3">
         <!-- form -->
         <form class="input-group mb-3" id="post-form">
           <div class="input-group-prepend">
             <select class="custom-select" name="action">
-              <option value="send" selected>Post to #general</option>
+              <option value="send" selected id="action-post-to">Post to #general</option>
               <option value="join">Join room #</option>
             </select>
           </div>
@@ -115,45 +84,12 @@
         </form>
         <!-- messages -->
         <div id="messages-container" class="container" style="height:100%;overflow:auto">
-          <div class="row text-muted py-2">
-            <small class="col-auto text-secondary">22:44</small>
-            <span class="col text-wrap"><a href="#" class="text-secondary">@<strong>Username</strong></a> a
-              quitté #general</span>
-          </div>
-          <div class="row bg-light py-2">
-            <small class="col-auto text-secondary">22:44</small>
-            <a href="#" title="Username" class="col-sm-2 text-truncate">@<strong>Username</strong></a>
-            <span class="col text-wrap">Bon ben bye…</span>
-          </div>
-          <div class="row bg-light py-2">
-            <small class="col-auto text-secondary">22:41</small>
-            <a href="#" title="Un autre username plus long" class="col-sm-2 text-truncate">@<strong>Un autre username
-                plus long</strong></a>
-            <span class="col text-wrap">Un texte très long qui devrait passer à la ligne on va voir comment ça se
-              passe, ah bah ça a l'air de bien se passer</span>
-          </div>
-          <div class="row text-muted py-2">
-            <small class="col-auto text-secondary">22:40</small>
-            <span class="col text-wrap"><a href="#" class="text-secondary">@<strong>Un autre username</strong></a> a
-              rejoint #general</span>
-          </div>
-          <div class="row bg-light py-2">
-            <small class="col-auto text-secondary">21:00</small>
-            <a href="#" title="Username" class="col-sm-2 text-truncate">@<strong>Username</strong></a>
-            <span class="col text-wrap">Yo ? よ !?</span>
-          </div>
-          <div class="row text-muted py-2">
-            <small class="col-auto text-secondary">20:58</small>
-            <span class="col text-wrap"><a href="#" class="text-secondary">@<strong>Username</strong></a> a
-              rejoint #general</span>
-          </div>
         </div>
       </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-      integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
-      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.30.1/date_fns.min.js"></script>
     <script src="/js/main.js"></script>
 </body>
 
