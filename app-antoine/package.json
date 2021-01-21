@@ -1,0 +1,35 @@
+{
+  "name": "app-antoine",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch-server": "cross-env NODE_ENV=development nodemon -e yml,js server.js | bunyan",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "bunyan": "^1.8.15",
+    "config": "^3.3.3",
+    "connect-redis": "^5.0.0",
+    "cross-env": "^7.0.3",
+    "debug": "^4.3.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "js-yaml": "^4.0.0",
+    "morgan": "^1.10.0",
+    "rimraf": "^3.0.2",
+    "socket.io": "^3.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.18.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1"
+  }
+}
