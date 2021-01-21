@@ -1,26 +1,31 @@
-"use strict";
+'use strict';
+
+/* globals $:readonly */
+
+console.log(window);
+
 (() => {
-  let username = null;
+	let username = null;
 
-  const login = (_username) => {
-    username = _username;
-    $(".txt-username").text(username);
-    $("#step-1").hide();
-    $("#step-2").show();
-    $("#step-2 input").focus();
-  };
+	const login = (_username) => {
+		username = _username;
+		$('.txt-username').text(username);
+		$('#step-1').hide();
+		$('#step-2').show();
+		$('#step-2 input').focus();
+	};
 
-  const send = (message) => {};
+	const send = (message) => {};
 
-  const join = (room) => {};
+	const join = (room) => {};
 
-  const clearMessages = () => {
-    $("#messages-container").empty();
-  };
+	const clearMessages = () => {
+		$('#messages-container').empty();
+	};
 
-  const addMessage = () => {
-    // TODO
-    /*
+	const addMessage = () => {
+		// TODO
+		/*
     <div class="row text-muted py-2">
       <small class="col-auto text-secondary">22:44</small>
       <span class="col text-wrap"><a href="#" class="text-secondary">@<strong>Username</strong></a> a
@@ -44,21 +49,21 @@
         rejoint #general</span>
     </div>
     */
-  };
+	};
 
-  // Events
+	// Events
 
-  $("#login-form").on("submit", (e) => {
-    e.preventDefault();
-    login(e.target.elements.username.value);
-  });
+	$('#login-form').on('submit', (e) => {
+		e.preventDefault();
+		login(e.target.elements.username.value);
+	});
 
-  $("#post-form").on("submit", (e) => {
-    e.preventDefault();
-    if (e.target.elements.action.value === "send") {
-      send(e.target.elements.message.value);
-    } else if (e.target.elements.action.value === "join") {
-      join(e.target.elements.message.value);
-    }
-  });
+	$('#post-form').on('submit', (e) => {
+		e.preventDefault();
+		if (e.target.elements.action.value === 'send') {
+			send(e.target.elements.message.value);
+		} else if (e.target.elements.action.value === 'join') {
+			join(e.target.elements.message.value);
+		}
+	});
 })();

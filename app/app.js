@@ -6,6 +6,7 @@ const home = require('./lib/routes/home');
 const fiboRouter = require('./lib/routes/fibo-router');
 const loggerMiddleware = require('./lib/logger-middleware');
 const config = require('config');
+const compression = require('compression');
 
 const app = express();
 
@@ -20,6 +21,12 @@ app.settings['x-powered-by'] = false;
 // ----------- //
 // Middlewares //
 // ----------- //
+
+if (config.server.gzip) {
+	app.use(compression());
+}
+
+app.use(express.static('public'));
 
 app.use(loggerMiddleware);
 

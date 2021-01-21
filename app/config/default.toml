@@ -5,6 +5,7 @@
 
 [server]
 port = 80
+gzip = false
 
 [bunyan]
 useStderr = true
