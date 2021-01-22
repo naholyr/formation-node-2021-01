@@ -6,7 +6,8 @@
   "scripts": {
     "watch-server": "cross-env NODE_ENV=development nodemon -e toml,js,cjs,mjs,json server.js | bunyan",
     "start": "cross-env NODE_ENV=production node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --forceExit --detectOpenHandles",
+    "watch-test": "jest --watch",
     "build": "echo building...",
     "prebuild": "npm run clean",
     "postbuild": "echo build ready",
@@ -39,8 +40,10 @@
     "eslint": "^7.18.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-prettier": "^3.3.1",
+    "jest": "^26.6.3",
     "nodemon": "^2.0.7",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "supertest": "^6.1.1"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.3",

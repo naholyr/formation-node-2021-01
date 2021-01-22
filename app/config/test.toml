@@ -1,0 +1,8 @@
+[bunyan]
+disabled = true
+useStderr = false
+level = "crit"
+
+[morgan]
+disabled = true
+format = "dev"

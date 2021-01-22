@@ -17,4 +17,8 @@ if (config.bunyan.useStderr) {
 	);
 }
 
+if (config.bunyan.disabled) {
+	logger.level(bunyan.FATAL + 1);
+}
+
 module.exports = logger;

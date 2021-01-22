@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/fibo/10 (snapshot) 1`] = `
+Object {
+  "input": 11,
+  "result": 42,
+}
+`;

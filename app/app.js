@@ -32,7 +32,9 @@ app.use(express.static('public'));
 
 app.use(loggerMiddleware);
 
-app.use(morgan(config.morgan.format));
+if (!config.morgan.disabled) {
+	app.use(morgan(config.morgan.format));
+}
 
 // very first connection = server response + cookie "session id" + generates associated data
 // second connection = request + cookie "session id" = server finds associated data

@@ -11,5 +11,5 @@ const server = http.createServer(app);
 initWebsocket(server);
 
 server.listen(config.server.port, () => {
-	logger.info(`Server ready http://localhost:${config.server.port}`);
+	logger.info(`Server ready http://localhost:${server.address().port}`);
 });
