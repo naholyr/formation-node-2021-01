@@ -4,7 +4,8 @@ const socketIo = require('socket.io');
 const debug = require('debug')('websocket');
 const { defaultClient: redis } = require('./redis-client');
 const logger = require('./logger');
-const fibo = require('./fibo');
+// const fibo = require('./fibo'); // TODO fibo-worker-2/master + asynchrone
+const fibo = require('./fibo-worker-2/master');
 
 /* optional dependencies:
 let bufferutil;
@@ -65,7 +66,8 @@ module.exports = (server) => {
 		debug(
 			'socket connected',
 			socket.handshake.auth.username, // validated by middleware
-			socket.id
+			socket.id,
+			process.pid
 		);
 
 		socket.join('chat:(system)');
@@ -103,12 +105,12 @@ module.exports = (server) => {
 			debug('socket disconnected', socket.id);
 		});
 
-		socket.on('send-message', (message, room) => {
+		socket.on('send-message', async (message, room) => {
 			// ChatBot: fibo
 			const matchFibo = message.match(/^\/fibo\s+(\d+)$/);
 			if (matchFibo) {
 				const n = Number(matchFibo[1]);
-				const result = fibo(n);
+				const result = await fibo(n);
 				sendMessage({
 					message: `fibo(${n}) = ${result}`,
 					username: socket.handshake.auth.username,
