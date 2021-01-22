@@ -13,3 +13,6 @@ level = "warn"
 
 [morgan]
 format = "combined"
+
+[session]
+secret = "keyboard cat"

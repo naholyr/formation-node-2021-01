@@ -1,6 +1,11 @@
 'use strict';
 
-/* globals $:readonly, dateFns:readonly */
+/* globals $:readonly, dateFns:readonly, io:readonly */
+
+// En prod avec webpack:
+// import io from 'socket.io-client';
+// import $ from 'jquery';
+// etc…
 
 (() => {
 	/**
@@ -11,24 +16,38 @@
 	let activeRoom = null;
 	let badgeValue = new Map();
 
-	const login = (username) => {
-		// TODO WS: ask to server
-		currentUsername = username;
-		localStorage.setItem('username', username);
-		$('.txt-username').text(username);
-		// Initial rooms
-		addRoom('(system)', { closable: false, badge: false });
-		addRoom('@' + username, { closable: false });
-		addRoom('#general');
-		select('#general');
-		// Update UI
-		$('#step-1').hide();
-		$('#step-2').show();
-		$('#step-2 input').focus();
+	// socket = connection to server
+	let socket;
+	const connect = (username) => {
+		socket = io(
+			// Handshake data
+			{ auth: { username } }
+		);
+
+		// TODO WS: on received message, add it to current room OR increment badge value
+		// TODO WS: on system event, show it
 	};
 
-	// TODO WS: on received message, add it to current room OR increment badge value
-	// TODO WS: on system event, show it
+	const login = (username) => {
+		connect(username);
+		socket.on('connect_error', () => {
+			console.error('connection refused');
+		});
+		socket.on('connect', () => {
+			currentUsername = username;
+			localStorage.setItem('username', username);
+			$('.txt-username').text(username);
+			// Initial rooms
+			addRoom('(system)', { closable: false, badge: false });
+			addRoom('@' + username, { closable: false });
+			addRoom('#general');
+			select('#general');
+			// Update UI
+			$('#step-1').hide();
+			$('#step-2').show();
+			$('#step-2 input').focus();
+		});
+	};
 
 	const send = (message) => {
 		// TODO WS: send to server
