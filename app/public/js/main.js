@@ -12,7 +12,6 @@
 	 * INIT (to be implemented with websocket interactions)
 	 */
 
-	let currentUsername = null;
 	let activeRoom = null;
 	let badgeValue = new Map();
 
@@ -48,7 +47,6 @@
 		});
 		// socket connected successfully
 		socket.on('connect', () => {
-			currentUsername = username;
 			localStorage.setItem('username', username);
 			$('.txt-username').text(username);
 			// Initial rooms
@@ -75,45 +73,13 @@
 
 	const select = (room) => {
 		// TODO WS: get messages (latest X messages, from least to most recent)
-		const messages = [
-			{
-				system: true,
-				room,
-				message: 'a rejoint ' + room,
-				username: 'Bob',
-				date: Date.now() - 400000,
-			},
-			{
-				system: true,
-				room,
-				message: 'a rejoint ' + room,
-				username: 'John',
-				date: Date.now() - 390000,
-			},
-			{
-				room,
-				message: 'coucou tout le monde !',
-				username: 'Bob',
-				date: Date.now() - 360000,
-			},
-			{
-				room,
-				message: 'salut Bob :D',
-				username: 'John',
-				date: Date.now() - 300000,
-			},
-			{
-				room: '@' + currentUsername,
-				message: 'coucou',
-				username: 'Bob (en mode harceleur)',
-				date: Date.now() - 26000,
-			},
-		];
-		// Update UI
-		setActiveRoom(room);
-		clearRoomBadge(room);
-		clearMessages();
-		messages.forEach(addMessage);
+		socket.emit('get-messages', room, (messages) => {
+			// Update UI
+			setActiveRoom(room);
+			clearRoomBadge(room);
+			clearMessages();
+			messages.reverse().forEach(addMessage);
+		});
 	};
 
 	const join = (room) => {

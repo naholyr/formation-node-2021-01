@@ -9,6 +9,8 @@ const loggerMiddleware = require('./lib/logger-middleware');
 const config = require('config');
 const compression = require('compression');
 const session = require('express-session');
+const { defaultClient } = require('./lib/redis-client');
+const RedisStore = require('connect-redis')(session);
 
 const app = express();
 
@@ -44,6 +46,7 @@ app.use(
 		secret: config.session.secret, // signed cookies
 		resave: true, // should I resave unmodified data + reset expiration ?
 		saveUninitialized: false, // should I save initial empty data + set cookie id ?
+		store: new RedisStore({ client: defaultClient }),
 	})
 );
 

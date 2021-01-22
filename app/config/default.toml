@@ -16,3 +16,9 @@ format = "combined"
 
 [session]
 secret = "keyboard cat"
+
+[redis]
+host = "localhost"
+port = 6379
+# db
+# password
