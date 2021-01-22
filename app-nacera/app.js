@@ -12,6 +12,7 @@ const app = express();
 app.settings['x-powered-by'] = false;
 // app.settings['etag'] = false; // save CPU but lose bandwidth
 
+app.use(express.static('public'));
 // Middleware
 app.use(loggerMiddleware);
 
