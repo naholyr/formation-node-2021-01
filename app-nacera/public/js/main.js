@@ -44,13 +44,19 @@
 			$('#step-2').show();
 			$('#step-2 input').focus();
 		});
-	};
 
-	// TODO WS: on received message, add it to current room OR increment badge value
-	// TODO WS: on system event, show it
+		socket.on('recv-message', (data) => {
+			addMessage(data);
+		});
+
+		// TODO WS: on system event, show it
+	};
 
 	const send = (message) => {
 		// TODO WS: send to server
+		socket.emit('send-message', message);
+		/*
+		// Optimistic UI rendering
 		// Update UI
 		addMessage({
 			room: activeRoom,
@@ -58,6 +64,7 @@
 			username: currentUsername,
 			date: Date.now(),
 		});
+		*/
 	};
 
 	const select = (room) => {

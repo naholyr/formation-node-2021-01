@@ -19,8 +19,54 @@
 	// socket = connection to server
 	let socket;
 	const connect = (username) => {
+		if (socket) {
+			// FIXME: remove all socket listener
+		}
 		// handshake data
-		socket = io({ auth: username });
+		socket = io({ auth: { username } });
+
+		socket.on('logged-in', (data) => {
+			console.log(data + ' logged in !!');
+		});
+
+		socket.on('recv-message', (data) => {
+			console.log('message received: ', {
+				message: data.message,
+				room: data.room,
+			});
+
+			addMessage({
+				room: data.room,
+				message: data.message,
+				username: data.username,
+				date: Date.now(),
+				// system: data.system,
+			});
+		});
+
+		socket.on('joined-room', (data) => {
+			console.log('joined room: ', {
+				username: data.username,
+				room: data.room,
+			});
+
+			$(`#rooms-container [data-room] .nav-link`).removeClass('active');
+			$(`#rooms-container [data-room="${data.room}"] .nav-link`).addClass(
+				'active'
+			);
+			activeRoom = data.room;
+			$('#action-post-to').text('Post to ' + data.room);
+		});
+
+		socket.on('left-room', (data) => {
+			console.log('left room: ', {
+				username: data.username,
+				room: data.room,
+			});
+
+			clearRoomBadge(data.room);
+			$(`#rooms-container [data-room="${data.room}"]`).remove();
+		});
 	};
 
 	const login = (username) => {
@@ -46,17 +92,14 @@
 	// TODO WS: on system event, show it
 
 	const send = (message) => {
-		// TODO WS: send to server
 		// Update UI
-		addMessage({
-			room: activeRoom,
-			message,
-			username: currentUsername,
-			date: Date.now(),
-		});
+		if (socket) {
+			socket.emit('send-message', { room: activeRoom, message });
+		}
 	};
 
 	const select = (room) => {
+		console.log('select room: ', room);
 		// TODO WS: get messages (latest X messages, from least to most recent)
 		const messages = [
 			{
@@ -101,6 +144,9 @@
 
 	const join = (room) => {
 		// TODO WS: ask to server
+		if (socket) {
+			socket.emit('join-room', { room });
+		}
 		// Update UI
 		addRoom(room);
 		select(room);
@@ -108,6 +154,9 @@
 
 	const leave = (room) => {
 		// TODO WS: tell to server
+		if (socket) {
+			socket.emit('leave-room', { room });
+		}
 		// Update UI
 		if (activeRoom === room) {
 			clearMessages();
@@ -191,6 +240,7 @@
 		$(`#rooms-container [data-room="${room}"] .nav-link`).addClass('active');
 		activeRoom = room;
 		$('#action-post-to').text('Post to ' + room);
+		$('#post-form [name="message"]').focus();
 	};
 
 	const incrRoomBadge = (room) => {
@@ -212,8 +262,9 @@
 	};
 
 	const removeRoom = (room) => {
-		clearRoomBadge(room);
-		$(`#rooms-container [data-room="${room}"]`).remove();
+		if (socket) {
+			socket.emit('leave-room', { room });
+		}
 	};
 
 	/**

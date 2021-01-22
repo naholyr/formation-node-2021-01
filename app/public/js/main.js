@@ -19,25 +19,40 @@
 	// socket = connection to server
 	let socket;
 	const connect = (username) => {
+		if (socket) {
+			// FIXME in case of bug and calling this twice, remove all listeners
+		}
+
 		socket = io(
 			// Handshake data
 			{ auth: { username } }
 		);
 
+		socket.on('logged-in', (username) => {
+			console.log('%s logged in', username);
+		});
+
 		// TODO WS: on received message, add it to current room OR increment badge value
+		socket.on('recv-message', (data) => {
+			addMessage(data);
+		});
+
 		// TODO WS: on system event, show it
 	};
 
 	const login = (username) => {
 		connect(username);
+		// socket connection refused
 		socket.on('connect_error', () => {
 			console.error('connection refused');
 		});
+		// socket connected successfully
 		socket.on('connect', () => {
 			currentUsername = username;
 			localStorage.setItem('username', username);
 			$('.txt-username').text(username);
 			// Initial rooms
+			clearRooms();
 			addRoom('(system)', { closable: false, badge: false });
 			addRoom('@' + username, { closable: false });
 			addRoom('#general');
@@ -47,17 +62,15 @@
 			$('#step-2').show();
 			$('#step-2 input').focus();
 		});
+		// on server's disconnect
+		socket.on('disconnect', () => {
+			console.log('disconnected');
+		});
 	};
 
 	const send = (message) => {
-		// TODO WS: send to server
-		// Update UI
-		addMessage({
-			room: activeRoom,
-			message,
-			username: currentUsername,
-			date: Date.now(),
-		});
+		socket.emit('send-message', message, activeRoom);
+		// No UI update, we'll receive "recv-message"
 	};
 
 	const select = (room) => {
@@ -104,14 +117,14 @@
 	};
 
 	const join = (room) => {
-		// TODO WS: ask to server
+		socket.emit('join-room', room);
 		// Update UI
 		addRoom(room);
 		select(room);
 	};
 
 	const leave = (room) => {
-		// TODO WS: tell to server
+		socket.emit('leave-room', room);
 		// Update UI
 		if (activeRoom === room) {
 			clearMessages();
@@ -195,6 +208,7 @@
 		$(`#rooms-container [data-room="${room}"] .nav-link`).addClass('active');
 		activeRoom = room;
 		$('#action-post-to').text('Post to ' + room);
+		$('#post-form [name="message"]').focus();
 	};
 
 	const incrRoomBadge = (room) => {
@@ -218,6 +232,11 @@
 	const removeRoom = (room) => {
 		clearRoomBadge(room);
 		$(`#rooms-container [data-room="${room}"]`).remove();
+	};
+
+	const clearRooms = () => {
+		$('#rooms-container').empty();
+		badgeValue.clear();
 	};
 
 	/**

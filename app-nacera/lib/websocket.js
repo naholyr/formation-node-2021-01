@@ -46,5 +46,14 @@ module.exports = (server) => {
 		socket.on('disconnect', () => {
 			console.log('bye bye', socket.id);
 		});
+
+		socket.on('send-message', (message, room) => {
+			io.emit('recv-message', {
+				message,
+				username: socket.handshake.auth.username,
+				date: Date.now(),
+				room,
+			});
+		});
 	});
 };

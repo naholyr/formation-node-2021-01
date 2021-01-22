@@ -20,15 +20,14 @@ module.exports = (server) => {
 	// Auth middleware (handshake)
 	io.use((socket, next) => {
 		if (socket.handshake.auth.username) {
-			next();
+			next(); // Connection accepted
 		} else {
-			next(new Error('No username provided'));
+			next(new Error('No username provided')); // Connection rejected
 		}
 	});
 
 	io.on('connection', (socket) => {
 		// socket = connection to client
-		socket.handshake.username; // validated by middleware
 		//
 		// socket.on = message from client
 		// socket.emit = message to client
@@ -43,8 +42,56 @@ module.exports = (server) => {
 		// io.to('room1').to('room2').emit = send to sockets of group "room1" + "room2"
 		// socket.broadcast.to('room').emit = on a compris
 
-		socket.on('disconnect', () => {
-			console.log('bye bye', socket.id);
+		console.log(
+			'socket connected',
+			socket.handshake.auth.username, // validated by middleware
+			socket.id
+		);
+
+		socket.join('chat:(system)');
+		socket.join('chat:@' + socket.handshake.auth.username);
+		socket.join('chat:#general');
+
+		socket.on('join-room', (room) => {
+			socket.join('chat:' + room);
+			io.to('chat:' + room).emit('recv-message', {
+				system: true,
+				room,
+				message: 'a rejoint ' + room,
+				username: socket.handshake.auth.username,
+				date: Date.now(),
+			});
 		});
+
+		socket.on('leave-room', (room) => {
+			socket.leave('chat:' + room);
+			io.to('chat:' + room).emit('recv-message', {
+				system: true,
+				room,
+				message: 'a quitté ' + room,
+				username: socket.handshake.auth.username,
+				date: Date.now(),
+			});
+		});
+
+		socket.broadcast
+			.to('chat:(system)')
+			.emit('logged-in', socket.handshake.auth.username);
+		// TODO send message to room "(system)"
+
+		socket.on('disconnect', () => {
+			console.log('socket disconnected', socket.id);
+		});
+
+		socket.on('send-message', (message, room) => {
+			io.to('chat:' + room).emit('recv-message', {
+				message,
+				username: socket.handshake.auth.username,
+				date: Date.now(),
+				room,
+			});
+		});
+
+		// socket.disconnect();
 	});
 };
