@@ -38,10 +38,10 @@ module.exports.initWebsocket = (server) => {
 			.to('chat:(system)')
 			.emit('logged-in', socket.handshake.auth.username);
 
-		socket.on('left-room', (room) => {
-			socket.leave('chat: ' + room);
+		socket.on('leave-room', (room) => {
+			socket.leave('chat:' + room);
 
-			io.to('chat: ' + room).emit('left-room', {
+			io.to('chat:' + room).emit('left-room', {
 				room,
 				username: socket.handshake.auth.username,
 			});
@@ -50,9 +50,9 @@ module.exports.initWebsocket = (server) => {
 		socket.on('join-room', (data) => {
 			console.log('joined room: ', data);
 
-			socket.join('chat: ' + data.room);
+			socket.join('chat:' + data.room);
 
-			io.to('chat: ' + data.room).emit('joined-room', {
+			io.to('chat:' + data.room).emit('joined-room', {
 				room: data.room,
 				username: socket.handshake.auth.username,
 			});

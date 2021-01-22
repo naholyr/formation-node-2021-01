@@ -1,6 +1,7 @@
 'use strict';
 
 const socketIo = require('socket.io');
+const debug = require('debug')('websocket');
 
 /* optional dependencies:
 let bufferutil;
@@ -15,6 +16,8 @@ Also see https://socket.io/docs/v3/server-installation/#Other-WebSocket-server-i
 
 module.exports = (server) => {
 	const io = socketIo(server);
+
+	debug('socket.io initialized');
 
 	// Integration with Express: https://socket.io/docs/v3/middlewares/#Compatibility-with-Express-middleware
 	// Auth middleware (handshake)
@@ -42,7 +45,7 @@ module.exports = (server) => {
 		// io.to('room1').to('room2').emit = send to sockets of group "room1" + "room2"
 		// socket.broadcast.to('room').emit = on a compris
 
-		console.log(
+		debug(
 			'socket connected',
 			socket.handshake.auth.username, // validated by middleware
 			socket.id
@@ -80,7 +83,7 @@ module.exports = (server) => {
 		// TODO send message to room "(system)"
 
 		socket.on('disconnect', () => {
-			console.log('socket disconnected', socket.id);
+			debug('socket disconnected', socket.id);
 		});
 
 		socket.on('send-message', (message, room) => {
