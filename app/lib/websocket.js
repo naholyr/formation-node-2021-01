@@ -6,6 +6,8 @@ const { defaultClient: redis } = require('./redis-client');
 const logger = require('./logger');
 // const fibo = require('./fibo'); // TODO fibo-worker-2/master + asynchrone
 const fibo = require('./fibo-worker-2/master');
+const redisAdapter = require('socket.io-redis');
+const config = require('config');
 
 /* optional dependencies:
 let bufferutil;
@@ -20,6 +22,8 @@ Also see https://socket.io/docs/v3/server-installation/#Other-WebSocket-server-i
 
 module.exports = (server) => {
 	const io = socketIo(server);
+
+	io.adapter(redisAdapter(config.redis));
 
 	debug('socket.io initialized');
 
